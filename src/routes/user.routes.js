@@ -9,7 +9,7 @@ router.route("/register").post(
     upload.fields([{name:"avatar",
         Maxcount:1,
     },{name:"coverImage",
-        maxCount:1
+    Maxcount:1
     }
 ]),
 
@@ -21,7 +21,8 @@ router.route("/register").post(
 
     router.route("/login").post(loginUser)
 
+ router.route("/logout").post(verifyJWT,logoutUser)
 
-    router.route("/logout").post(verifyJWT,logoutUser)
+ router.route("/refresh-token").post(refreshAccessToken)
 
 export default router
