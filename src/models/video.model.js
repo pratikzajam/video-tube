@@ -1,12 +1,8 @@
 import mongoose, { Schema } from "mongoose";
+
 import mongooseAggregatePaginate from "mongoose-aggregate-paginate-v2";
 
-const videoSchema = new Schema({
-},
-{
-    timestamps:true
-}    
-)
+
 
 
 const videoSchema = new Schema({
@@ -19,10 +15,6 @@ const videoSchema = new Schema({
     required: true,
   },
   title: {
-    type: String,
-    required: true,
-  },
-  description: {
     type: String,
     required: true,
   },
@@ -47,3 +39,6 @@ const videoSchema = new Schema({
     ref: "User",
   },
 });
+
+
+export const video = mongoose.model("video", videoSchema);
