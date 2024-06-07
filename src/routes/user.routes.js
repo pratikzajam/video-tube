@@ -27,6 +27,7 @@ router.route("/uploadVideo").post(
 uploadVideo,)
 
 
+
 router.route("/login").post(loginUser);
 router.route('/video/:videoId').delete(deleteVideo);
 router.route('/getVideo/:videoId').get(getVideoById);
