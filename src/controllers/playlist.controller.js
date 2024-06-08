@@ -1,18 +1,26 @@
 import mongoose from "mongoose";
 import { Playlist } from "../models/playlist.model.js";
 import { video } from "../models/video.model.js";
+import { User } from "../models/user.model.js";
 import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 
 const createPlaylist = asyncHandler(async (req, res) => {
-  const { name, description } = req.body;
+  const { name, description, userId } = req.body;
 
-  if (!name || !description) {
+  if (!name || !description || !userId) {
     throw new ApiError(400, "All fields required");
   }
 
+  const userExists = await User.findById(userId);
+
+  if (!userExists) {
+    throw new ApiError(400, "user does not exists");
+  }
+
   const playlist = await Playlist.create({
+    owner: userId,
     name: name,
     description: description,
   });
@@ -28,7 +36,18 @@ const createPlaylist = asyncHandler(async (req, res) => {
 
 const getUserPlaylists = asyncHandler(async (req, res) => {
   const { userId } = req.params;
-  //TODO: get user playlists
+
+  if (!userId) {
+    throw new ApiError(400, "All fields required");
+  }
+
+  const userExists = await user.findById(userId);
+
+  if (!userExists) {
+    throw new ApiError(400, "user does not exists");
+  }
+
+  
 });
 
 const getPlaylistById = asyncHandler(async (req, res) => {
