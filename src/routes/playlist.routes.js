@@ -7,6 +7,7 @@ const router=Router()
 
 
 router.route("/createplaylist").post(createPlaylist);
+
 router.route("/getuserplaylists/:userId").post(getUserPlaylists);
 router.route("/getplaylistbyid/:playlistId").post(getPlaylistById);
 router.route("/updateplaylist/:playlistId").patch(updatePlaylist);
