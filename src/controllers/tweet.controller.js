@@ -64,7 +64,7 @@ const getUserTweets = asyncHandler(async (req, res) => {
     },
     {
       $addFields: {
-        user: {
+        owner: {
           $first: "$owner",
         },
       },
@@ -72,7 +72,7 @@ const getUserTweets = asyncHandler(async (req, res) => {
 
   ])
 
-  return res.status(201).json(new ApiResponse(200,tweetDetails,"tweets fetched sucessfully"));
+  return res.status(201).json(new ApiResponse(200,tweetDetails,"Tweets fetched sucessfully"));
   
 });
 

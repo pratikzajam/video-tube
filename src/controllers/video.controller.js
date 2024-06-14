@@ -8,8 +8,6 @@ import jwt from "jsonwebtoken";
 import fs from "fs";
 
 const uploadVideo = asyncHandler(async (req, res) => {
-
-
   console.log(req.files);
 
   const videoFile = req.files?.video[0]["path"];
@@ -155,7 +153,7 @@ const togglePublishStatus = asyncHandler(async (req, res) => {
 const updateVideo = asyncHandler(async (req, res) => {
   const { videoId } = req.params;
   const { title, description } = req.body;
- console.log(req.files);
+  console.log(req.files);
 
   if (!videoId) {
     throw new ApiError(400, "Something went wrong");
@@ -186,25 +184,17 @@ const updateVideo = asyncHandler(async (req, res) => {
     {
       $set: {
         title: title,
-        description:description,
-        thaumbnail:thaumbnail.url,
-       
+        description: description,
+        thaumbnail: thaumbnail.url,
       },
     },
     { new: true }
-  )
+  );
 
-
- return res
+  return res
     .status(201)
-    .json(new ApiResponse(200,"video details updated sucessfully"));
-
-  });
-
-
-
-
-
+    .json(new ApiResponse(200, "video details updated sucessfully"));
+});
 
 export {
   uploadVideo,
@@ -212,5 +202,5 @@ export {
   deleteVideo,
   getVideoById,
   togglePublishStatus,
-  updateVideo
+  updateVideo,
 };
