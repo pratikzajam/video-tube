@@ -17,7 +17,7 @@ router.route("/register").post(
 registerUser,)
 
 
-router.route("/uploadVideo").post(
+router.route("/uploadVideo/:videoId").post(
     upload.fields([{name:"video",
         Maxcount:1,
     },{name:"thumbnail",
@@ -32,7 +32,7 @@ router.route("/login").post(loginUser);
 router.route('/video/:videoId').delete(deleteVideo);
 router.route('/getVideo/:videoId').get(getVideoById);
 router.route('/changeStatus/:videoId').get(togglePublishStatus);
-router.route("/videoDetails").post(videoDetails)
+router.route("/videoDetails").post(verifyJWT,videoDetails)
 
 router.route("/updatevideoDetails/:videoId").patch(verifyJWT,upload.fields([{name:"thumbnail",
 Maxcount:1

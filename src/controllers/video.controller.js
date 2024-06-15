@@ -8,7 +8,15 @@ import jwt from "jsonwebtoken";
 import fs from "fs";
 
 const uploadVideo = asyncHandler(async (req, res) => {
-  console.log(req.files);
+  // console.log(req.files);
+
+ const  videoId=req.params.videoId;
+
+ if (!videoId) {
+  throw new ApiError(400, "Something went wrong");
+}
+
+
 
   const videoFile = req.files?.video[0]["path"];
 
@@ -25,7 +33,7 @@ const uploadVideo = asyncHandler(async (req, res) => {
   const Video = await uploadOnCloudinary(videoFile);
   const thumbnail = await uploadOnCloudinary(thumbnailFile);
 
-  console.log(Video);
+  // console.log(Video);
 
   if (!Video) {
     throw new ApiError(400, "file upload error");
@@ -35,14 +43,25 @@ const uploadVideo = asyncHandler(async (req, res) => {
     throw new ApiError(400, "thumbnail upload error");
   }
 
-  const videoDocument = new video({
-    videoFile: Video?.url || "",
-    thumbnail: thumbnail?.url || "",
-    duration: Video?.duration || "",
-  });
+  // const videoDocument = new video({
+  //   videoFile: Video?.url || "",
+  //   thumbnail: thumbnail?.url || "",
+  //   duration: Video?.duration || "",
+  // });
 
-  // Save the document with validation disabled
-  await videoDocument.save({ validateBeforeSave: false });
+  const videoDocument = await video.findByIdAndUpdate(
+    videoId,
+    {
+        $set: {
+            videoFile: Video?.url || "",
+            thumbnail: thumbnail?.url || "",
+            duration: Video?.duration || "",
+        },
+    },
+    { new: true, runValidators: false } // Disable validation during update
+);
+
+
 
   return res
     .status(200)
@@ -52,11 +71,19 @@ const uploadVideo = asyncHandler(async (req, res) => {
 const videoDetails = asyncHandler(async (req, res) => {
   const { title, description } = req.body;
 
+
+  const user=req.user;
+
+  const userId=req.user._id
+
+
+
   if (!title && !description) {
     throw new ApiError(400, "All fields are required");
   }
 
   const videoDocument = new video({
+    owner: userId,
     title: title,
     description: description,
   });
